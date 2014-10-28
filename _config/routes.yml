@@ -1,0 +1,9 @@
+---
+Name: customroutes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'facebook//$Action/$ID/$OtherID' : 'FacebookController'
+    'google//$Action/$ID/$OtherID' : 'GoogleController'
+    'twitter//$Action/$ID/$OtherID' : 'TwitterController'

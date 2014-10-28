@@ -1,0 +1,11 @@
+en:
+  FacebookConnect:
+    LOGINBUTTON: '<i class="fa fa-facebook"></i> Login with facebook'
+    ERRORTITLE: 'Login with facebook - error'
+    ERRORCONTENT: 'An error occured.'
+  GoogleConnect:
+    LOGINBUTTON: '<i class="fa fa-google-plus"></i> Login with google'
+    ERRORTITLE: 'Login with google - error'
+    ERRORCONTENT: 'An error occured.'
+  TwitterConnect:
+    LOGINBUTTON: '<i class="fa fa-twitter"></i> Login with twitter'

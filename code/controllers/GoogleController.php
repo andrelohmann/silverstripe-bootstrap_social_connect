@@ -4,7 +4,7 @@
  * @package some config
  * http://doc.silverstripe.org/framework/en/3.1/topics/controller
  */
-class GoogleController extends Page_Controller {
+class GoogleController extends Controller {
 	
 	private static $url_segment = 'google';
 	
@@ -108,18 +108,10 @@ class GoogleController extends Page_Controller {
 	 */
 	public function error() {
             
-            $tmpPage = new Page();
-            $tmpPage->Title = _t('GoogleConnect.ERRORTITLE', 'GoogleConnect.ERRORTITLE');
-            $tmpPage->URLSegment = $this->stat('url_segment');
-            $tmpPage->ID = -1; // Set the page ID to -1 so we dont get the top level pages as its children
-            $controller = new Page_Controller($tmpPage);
-            $controller->init();
-
-            $customisedController = $controller->customise(array(
+            return $this->customise(new ArrayData(array(
                 'Title' => _t('GoogleConnect.ERRORTITLE', 'GoogleConnect.ERRORTITLE'),
                 'Content' => _t('GoogleConnect.ERRORCONTENT', 'GoogleConnect.ERRORCONTENT')
-            ));
-            return $customisedController->renderWith(
+            )))->renderWith(
                 array('Google_error', 'Google', 'Page', $this->stat('template_main'), 'BlankPage')
             );
 	}

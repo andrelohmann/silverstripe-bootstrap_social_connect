@@ -4,7 +4,7 @@
  * @package some config
  * http://doc.silverstripe.org/framework/en/3.1/topics/controller
  */
-class FacebookController extends Page_Controller {
+class FacebookController extends Controller {
 	
 	private static $url_segment = 'facebook';
 	
@@ -115,18 +115,10 @@ class FacebookController extends Page_Controller {
 	 */
 	public function error() {
             
-            $tmpPage = new Page();
-            $tmpPage->Title = _t('FacebookConnect.ERRORTITLE', 'FacebookConnect.ERRORTITLE');
-            $tmpPage->URLSegment = $this->stat('url_segment');
-            $tmpPage->ID = -1; // Set the page ID to -1 so we dont get the top level pages as its children
-            $controller = new Page_Controller($tmpPage);
-            $controller->init();
-
-            $customisedController = $controller->customise(array(
+            return $this->customise(new ArrayData(array(
                 'Title' => _t('FacebookConnect.ERRORTITLE', 'FacebookConnect.ERRORTITLE'),
                 'Content' => _t('FacebookConnect.ERRORCONTENT', 'FacebookConnect.ERRORCONTENT')
-            ));
-            return $customisedController->renderWith(
+            )))->renderWith(
                 array('Facebook_error', 'Facebook', 'Page', $this->stat('template_main'), 'BlankPage')
             );
 	}

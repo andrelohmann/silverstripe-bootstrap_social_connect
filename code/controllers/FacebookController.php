@@ -10,6 +10,7 @@ class FacebookController extends Controller {
 	
 	private static $allowed_actions = array( 
             'auth',
+            'signup',
             'error'
 	);
 	

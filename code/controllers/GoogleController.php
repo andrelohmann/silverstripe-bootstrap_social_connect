@@ -89,12 +89,16 @@ class GoogleController extends Controller {
             $o_Member->Email = $user['email'];
             
             // if EmailVerifiedMember Module is used
-            //EmailVerifiedMember::set_deactivate_send_validation_mail(false);
-            //$o_Member->Verified = true;
-            //$o_Member->VerificationEmailSent = true;
-            //EmailVerifiedMember::set_deactivate_send_validation_mail(true);
-            $o_Member->write();
-            //EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+            if(class_exists('EmailVerifiedMember')) {
+                EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+                $o_Member->Verified = true;
+                $o_Member->VerificationEmailSent = true;
+                EmailVerifiedMember::set_deactivate_send_validation_mail(true);
+                $o_Member->write();
+                EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+            }else{
+                $o_Member->write();
+            }
             
             $o_Member->logIn();
             

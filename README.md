@@ -31,6 +31,12 @@ Write your own Signup Method (with your specific form and parameters) and set th
  * remove every API except (or add) Google+ API
  * go to credentials/Zugangsdaten and add an OAuth Client ID
 
+#### Instagram
+
+ * go to https://instagram.com/developer/ and register your application (Manage Clients)
+ * set the correct URL
+ * fetch API Key and API Secret and set inside your _ss_environment.php
+
 #### Twitter
 
  * go to https://apps.twitter.com/ and create a new application

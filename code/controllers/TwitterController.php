@@ -6,7 +6,9 @@
  */
 class TwitterController extends Controller {
 	
-	private static $url_segment = 'twitter';
+	public static $url_topic = 'socialconnect';
+	
+	public static $url_segment = 'twitter';
 	
 	private static $allowed_actions = array(
             'login',
@@ -29,6 +31,8 @@ class TwitterController extends Controller {
 	 */
 	public function init() {
             parent::init();
+            
+            if(!defined('TWITTER_CONSUMER_KEY')) return $this->httpError(404, _t('TwitterConnect.ERRORUNAVAILABLE', 'TwitterConnect.ERRORUNAVAILABLE'));
  	}
         
         // creating the oath tokens and redirecting to the twitter auth page

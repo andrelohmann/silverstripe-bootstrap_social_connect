@@ -6,4 +6,5 @@ Director:
   rules:
     'facebook//$Action/$ID/$OtherID' : 'FacebookController'
     'google//$Action/$ID/$OtherID' : 'GoogleController'
+    'instagram//$Action/$ID/$OtherID' : 'InstagramController'
     'twitter//$Action/$ID/$OtherID' : 'TwitterController'

@@ -3,9 +3,17 @@ en:
     LOGINBUTTON: '<i class="fa fa-facebook"></i> Login with facebook'
     ERRORTITLE: 'Login with facebook - error'
     ERRORCONTENT: 'An error occured.'
+    ERRORUNAVAILABLE: 'Login with facebook is unavailable.'
   GoogleConnect:
     LOGINBUTTON: '<i class="fa fa-google-plus"></i> Login with google'
     ERRORTITLE: 'Login with google - error'
     ERRORCONTENT: 'An error occured.'
+    ERRORUNAVAILABLE: 'Login with google is unavailable.'
+  InstagramConnect:
+    LOGINBUTTON: '<i class="fa fa-instagram"></i> Login with instagram'
+    ERRORTITLE: 'Login with instagram - error'
+    ERRORCONTENT: 'An error occured.'
+    ERRORUNAVAILABLE: 'Login with instagram is unavailable.'
   TwitterConnect:
     LOGINBUTTON: '<i class="fa fa-twitter"></i> Login with twitter'
+    ERRORUNAVAILABLE: 'Login with twitter is unavailable.'

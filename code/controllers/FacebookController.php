@@ -6,7 +6,9 @@
  */
 class FacebookController extends Controller {
 	
-	private static $url_segment = 'facebook';
+	public static $url_topic = 'socialconnect';
+	
+	public static $url_segment = 'facebook';
 	
 	private static $allowed_actions = array( 
             'auth',
@@ -28,6 +30,8 @@ class FacebookController extends Controller {
 	 */
 	public function init() {
             parent::init();
+            
+            if(!defined('FACEBOOK_APP_ID')) return $this->httpError(404, _t('FacebookConnect.ERRORUNAVAILABLE', 'FacebookConnect.ERRORUNAVAILABLE'));
  	}
         
         public function auth(){

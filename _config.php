@@ -1,40 +1,66 @@
 <?php
 
-/**
- * FacebookMember
- */
-Member::add_extension('FacebookMember');
+if(defined('FACEBOOK_APP_ID')){
 
-Controller::add_extension('FacebookCredentialController');
+    /**
+     * FacebookMember
+     */
+    Member::add_extension('FacebookMember');
 
-FacebookAuthRequest::set_facebook_app_id(FACEBOOK_APP_ID);
-FacebookAuthRequest::set_facebook_app_secret(FACEBOOK_APP_SECRET);
-FacebookAuthRequest::set_facebook_redirect_url(FACEBOOK_REDIRECT_URL);
-FacebookAuthRequest::set_facebook_scope(FACEBOOK_SCOPE);
-FacebookAuthRequest::set_signup_path(FACEBOOK_SIGNUP_PATH);
-FacebookAuthRequest::set_error_path(FACEBOOK_ERROR_PATH);
+    Controller::add_extension('FacebookCredentialController');
+    
+    FacebookAuthRequest::set_facebook_app_id(FACEBOOK_APP_ID);
+    FacebookAuthRequest::set_facebook_app_secret(FACEBOOK_APP_SECRET);
+    FacebookAuthRequest::set_facebook_redirect_url(FACEBOOK_REDIRECT_URL);
+    FacebookAuthRequest::set_facebook_scope(FACEBOOK_SCOPE);
+    FacebookAuthRequest::set_signup_path(FACEBOOK_SIGNUP_PATH);
+    FacebookAuthRequest::set_error_path(FACEBOOK_ERROR_PATH);
+}
 
-/**
- * GoogleMember
- */
-Member::add_extension('GoogleMember');
+if(defined('GOOGLE_CLIENT_ID')){
 
-Controller::add_extension('GoogleCredentialController');
+    /**
+     * GoogleMember
+     */
+    Member::add_extension('GoogleMember');
 
-GoogleAuthRequest::set_google_client_id(GOOGLE_CLIENT_ID);
-GoogleAuthRequest::set_google_client_secret(GOOGLE_CLIENT_SECRET);
-GoogleAuthRequest::set_google_redirect_url(GOOGLE_REDIRECT_URL);
-GoogleAuthRequest::set_google_scope(GOOGLE_SCOPE);
-GoogleAuthRequest::set_signup_path(GOOGLE_SIGNUP_PATH);
-GoogleAuthRequest::set_error_path(GOOGLE_ERROR_PATH);
+    Controller::add_extension('GoogleCredentialController');
 
-/**
- * TwitterMember
- */
-Member::add_extension('TwitterMember');
+    GoogleAuthRequest::set_google_client_id(GOOGLE_CLIENT_ID);
+    GoogleAuthRequest::set_google_client_secret(GOOGLE_CLIENT_SECRET);
+    GoogleAuthRequest::set_google_redirect_url(GOOGLE_REDIRECT_URL);
+    GoogleAuthRequest::set_google_scope(GOOGLE_SCOPE);
+    GoogleAuthRequest::set_signup_path(GOOGLE_SIGNUP_PATH);
+    GoogleAuthRequest::set_error_path(GOOGLE_ERROR_PATH);
+}
 
-TwitterMember::set_twitter_consumer_key(TWITTER_CONSUMER_KEY);
-TwitterMember::set_twitter_consumer_secret(TWITTER_CONSUMER_SECRET);
-TwitterMember::set_twitter_callback_url(TWITTER_CALLBACK_URL);
-TwitterMember::set_signup_path(TWITTER_SIGNUP_PATH);
-TwitterMember::set_error_path(TWITTER_ERROR_PATH);
+if(defined('TWITTER_CONSUMER_KEY')){
+
+    /**
+     * TwitterMember
+     */
+    Member::add_extension('TwitterMember');
+
+    TwitterMember::set_twitter_consumer_key(TWITTER_CONSUMER_KEY);
+    TwitterMember::set_twitter_consumer_secret(TWITTER_CONSUMER_SECRET);
+    TwitterMember::set_twitter_callback_url(TWITTER_CALLBACK_URL);
+    TwitterMember::set_signup_path(TWITTER_SIGNUP_PATH);
+    TwitterMember::set_error_path(TWITTER_ERROR_PATH);
+}
+
+if(defined('INSTAGRAM_CLIENT_ID')){
+
+    /**
+     * GoogleMember
+     */
+    Member::add_extension('InstagramMember');
+
+    Controller::add_extension('InstagramCredentialController');
+
+    InstagramAuthRequest::set_instagram_client_id(INSTAGRAM_CLIENT_ID);
+    InstagramAuthRequest::set_instagram_client_secret(INSTAGRAM_CLIENT_SECRET);
+    InstagramAuthRequest::set_instagram_redirect_url(INSTAGRAM_REDIRECT_URL);
+    InstagramAuthRequest::set_instagram_scope(INSTAGRAM_SCOPE);
+    InstagramAuthRequest::set_signup_path(INSTAGRAM_SIGNUP_PATH);
+    InstagramAuthRequest::set_error_path(INSTAGRAM_ERROR_PATH);
+}

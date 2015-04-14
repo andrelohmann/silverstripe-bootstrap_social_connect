@@ -6,7 +6,9 @@
  */
 class GoogleController extends Controller {
 	
-	private static $url_segment = 'google';
+	public static $url_topic = 'socialconnect';
+	
+	public static $url_segment = 'google';
 	
 	private static $allowed_actions = array( 
             'auth',
@@ -28,6 +30,8 @@ class GoogleController extends Controller {
 	 */
 	public function init() {
             parent::init();
+            
+            if(!defined('GOOGLE_CLIENT_ID')) return $this->httpError(404, _t('GoogleConnect.ERRORUNAVAILABLE', 'GoogleConnect.ERRORUNAVAILABLE'));
  	}
         
         public function auth(){

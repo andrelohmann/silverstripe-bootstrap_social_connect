@@ -114,7 +114,7 @@ class InstagramController extends Controller {
                 'Title' => _t('InstagramConnect.ERRORTITLE', 'InstagramConnect.ERRORTITLE'),
                 'Content' => _t('InstagramConnect.ERRORCONTENT', 'InstagramConnect.ERRORCONTENT')
             )))->renderWith(
-                array('Instagram_error', 'Instagram', 'Page', $this->stat('template_main'), 'BlankPage')
+                array('Instagram_error', 'Instagram', $this->stat('template_main'), $this->stat('template'))
             );
 	}
 }

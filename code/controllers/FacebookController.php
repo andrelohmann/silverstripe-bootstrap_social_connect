@@ -128,7 +128,7 @@ class FacebookController extends Controller {
                 'Title' => _t('FacebookConnect.ERRORTITLE', 'FacebookConnect.ERRORTITLE'),
                 'Content' => _t('FacebookConnect.ERRORCONTENT', 'FacebookConnect.ERRORCONTENT')
             )))->renderWith(
-                array('Facebook_error', 'Facebook', 'Page', $this->stat('template_main'), 'BlankPage')
+                array('Facebook_error', 'Facebook', $this->stat('template_main'), $this->stat('template'))
             );
 	}
 }

@@ -120,7 +120,7 @@ class GoogleController extends Controller {
                 'Title' => _t('GoogleConnect.ERRORTITLE', 'GoogleConnect.ERRORTITLE'),
                 'Content' => _t('GoogleConnect.ERRORCONTENT', 'GoogleConnect.ERRORCONTENT')
             )))->renderWith(
-                array('Google_error', 'Google', 'Page', $this->stat('template_main'), 'BlankPage')
+                array('Google_error', 'Google', $this->stat('template_main'), $this->stat('template'))
             );
 	}
 }

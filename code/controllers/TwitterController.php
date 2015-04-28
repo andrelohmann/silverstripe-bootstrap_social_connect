@@ -163,7 +163,7 @@ class TwitterController extends Controller {
                 'Title' => _t('TwitterConnect.ERRORTITLE', 'TwitterConnect.ERRORTITLE'),
                 'Content' => _t('TwitterConnect.ERRORCONTENT', 'TwitterConnect.ERRORCONTENT')
             )))->renderWith(
-                array('Twitter_error', 'Twitter', 'Page', $this->stat('template_main'), 'BlankPage')
+                array('Twitter_error', 'Twitter', $this->stat('template_main'), $this->stat('template'))
             );
 	}
 }

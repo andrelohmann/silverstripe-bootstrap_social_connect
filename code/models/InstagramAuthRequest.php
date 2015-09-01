@@ -5,65 +5,17 @@
  */
 class InstagramAuthRequest extends DataObject {
     
-    private static $instagram_client_id = null;
+    private static $client_id = null;
     
-    private static $instagram_client_secret = null;
+    private static $client_secret = null;
     
-    private static $instagram_redirect_url = null;
+    private static $redirect_url = null;
     
-    private static $instagram_scope = null;
+    private static $scope = null;
     
-    private static $instagram_signup_path = null;
+    private static $signup_path = null;
     
-    private static $instagram_error_path = null;
-    
-    public static function set_instagram_client_id($id){
-        self::$instagram_client_id = $id;
-    }
-    
-    public static function get_instagram_client_id(){
-        return self::$instagram_client_id;
-    }
-    
-    public static function set_instagram_client_secret($secret){
-        self::$instagram_client_secret = $secret;
-    }
-    
-    public static function get_instagram_client_secret(){
-        return self::$instagram_client_secret;
-    }
-    
-    public static function set_instagram_redirect_url($url){
-        self::$instagram_redirect_url = $url;
-    }
-    
-    public static function get_instagram_redirect_url(){
-        return self::$instagram_redirect_url;
-    }
-    
-    public static function set_instagram_scope($scope){
-        self::$instagram_scope = $scope;
-    }
-    
-    public static function get_instagram_scope(){
-        return self::$instagram_scope;
-    }
-    
-    public static function set_signup_path($path){
-        self::$instagram_signup_path = $path;
-    }
-    
-    public static function get_signup_path(){
-        return self::$instagram_signup_path;
-    }
-    
-    public static function set_error_path($path){
-        self::$instagram_error_path = $path;
-    }
-    
-    public static function get_error_path(){
-        return self::$instagram_error_path;
-    }
+    private static $error_path = null;
     
     private static $EXCHANGE_ACCESS_TOKEN_URL = 'https://api.instagram.com/oauth/access_token';
     
@@ -123,7 +75,7 @@ class InstagramAuthRequest extends DataObject {
     }
     
     public static function ExchangeAccessToken($code){
-        return self::run_curl(self::$EXCHANGE_ACCESS_TOKEN_URL, 'POST', "client_id=".self::get_instagram_client_id()."&redirect_uri=".self::get_instagram_redirect_url()."&client_secret=".self::get_instagram_client_secret()."&code=".$code."&grant_type=authorization_code");
+        return self::run_curl(self::$EXCHANGE_ACCESS_TOKEN_URL, 'POST', "client_id=".self::config()->client_id."&redirect_uri=".self::config()->redirect_url."&client_secret=".self::config()->client_secret."&code=".$code."&grant_type=authorization_code");
     }
     
     public static function run_curl($url, $method = 'GET', $postvars = null){

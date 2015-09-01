@@ -5,65 +5,17 @@
  */
 class GoogleAuthRequest extends DataObject {
     
-    private static $google_client_id = null;
+    private static $client_id = null;
     
-    private static $google_client_secret = null;
+    private static $client_secret = null;
     
-    private static $google_redirect_url = null;
+    private static $redirect_url = null;
     
-    private static $google_scope = null;
+    private static $scope = null;
     
-    private static $google_signup_path = null;
+    private static $signup_path = null;
     
-    private static $google_error_path = null;
-    
-    public static function set_google_client_id($id){
-        self::$google_client_id = $id;
-    }
-    
-    public static function get_google_client_id(){
-        return self::$google_client_id;
-    }
-    
-    public static function set_google_client_secret($secret){
-        self::$google_client_secret = $secret;
-    }
-    
-    public static function get_google_client_secret(){
-        return self::$google_client_secret;
-    }
-    
-    public static function set_google_redirect_url($url){
-        self::$google_redirect_url = $url;
-    }
-    
-    public static function get_google_redirect_url(){
-        return self::$google_redirect_url;
-    }
-    
-    public static function set_google_scope($scope){
-        self::$google_scope = $scope;
-    }
-    
-    public static function get_google_scope(){
-        return self::$google_scope;
-    }
-    
-    public static function set_signup_path($path){
-        self::$google_signup_path = $path;
-    }
-    
-    public static function get_signup_path(){
-        return self::$google_signup_path;
-    }
-    
-    public static function set_error_path($path){
-        self::$google_error_path = $path;
-    }
-    
-    public static function get_error_path(){
-        return self::$google_error_path;
-    }
+    private static $error_path = null;
     
     private static $EXCHANGE_ACCESS_TOKEN_URL = 'https://accounts.google.com/o/oauth2/token';
     
@@ -123,7 +75,7 @@ class GoogleAuthRequest extends DataObject {
     }
     
     public static function ExchangeAccessToken($code){
-        return self::run_curl(self::$EXCHANGE_ACCESS_TOKEN_URL, 'POST', "client_id=".self::get_google_client_id()."&redirect_uri=".self::get_google_redirect_url()."&client_secret=".self::get_google_client_secret()."&code=".$code."&grant_type=authorization_code");
+        return self::run_curl(self::$EXCHANGE_ACCESS_TOKEN_URL, 'POST', "client_id=".self::config()->client_id."&redirect_uri=".self::config()->redirect_url."&client_secret=".self::config()->client_secret."&code=".$code."&grant_type=authorization_code");
     }
     
     public static function run_curl($url, $method = 'GET', $postvars = null){

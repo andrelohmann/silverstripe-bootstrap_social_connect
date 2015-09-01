@@ -14,15 +14,15 @@ class InstagramCredentialController extends Extension {
     );
     
     public function InstagramClientId(){
-        return InstagramAuthRequest::get_instagram_client_id();
+        return InstagramAuthRequest::config()->client_id;
     }
     
     public function InstagramRedirectUrl(){
-        return InstagramAuthRequest::get_instagram_redirect_url();
+        return InstagramAuthRequest::config()->redirect_url;
     }
     
     public function InstagramScope(){
-        return InstagramAuthRequest::get_instagram_scope();
+        return InstagramAuthRequest::config()->scope;
     }
     
     public function InstagramState(){

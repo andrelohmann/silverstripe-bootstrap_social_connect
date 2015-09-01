@@ -14,15 +14,15 @@ class GoogleCredentialController extends Extension {
     );
     
     public function GoogleClientId(){
-        return GoogleAuthRequest::get_google_client_id();
+        return GoogleAuthRequest::config()->client_id;
     }
     
     public function GoogleRedirectUrl(){
-        return GoogleAuthRequest::get_google_redirect_url();
+        return GoogleAuthRequest::config()->redirect_url;
     }
     
     public function GoogleScope(){
-        return GoogleAuthRequest::get_google_scope();
+        return GoogleAuthRequest::config()->scope;
     }
     
     public function GoogleState(){

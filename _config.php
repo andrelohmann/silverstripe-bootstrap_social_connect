@@ -9,12 +9,12 @@ if(defined('FACEBOOK_APP_ID')){
 
     Controller::add_extension('FacebookCredentialController');
     
-    FacebookAuthRequest::set_facebook_app_id(FACEBOOK_APP_ID);
-    FacebookAuthRequest::set_facebook_app_secret(FACEBOOK_APP_SECRET);
-    FacebookAuthRequest::set_facebook_redirect_url(FACEBOOK_REDIRECT_URL);
-    FacebookAuthRequest::set_facebook_scope(FACEBOOK_SCOPE);
-    FacebookAuthRequest::set_signup_path(FACEBOOK_SIGNUP_PATH);
-    FacebookAuthRequest::set_error_path(FACEBOOK_ERROR_PATH);
+    Config::inst()->update('FacebookAuthRequest', 'app_id', FACEBOOK_APP_ID);
+    Config::inst()->update('FacebookAuthRequest', 'app_secret', FACEBOOK_APP_SECRET);
+    Config::inst()->update('FacebookAuthRequest', 'redirect_url', FACEBOOK_REDIRECT_URL);
+    Config::inst()->update('FacebookAuthRequest', 'scope', FACEBOOK_SCOPE);
+    Config::inst()->update('FacebookAuthRequest', 'signup_path', FACEBOOK_SIGNUP_PATH);
+    Config::inst()->update('FacebookAuthRequest', 'error_path', FACEBOOK_ERROR_PATH);
 }
 
 if(defined('GOOGLE_CLIENT_ID')){
@@ -26,12 +26,12 @@ if(defined('GOOGLE_CLIENT_ID')){
 
     Controller::add_extension('GoogleCredentialController');
 
-    GoogleAuthRequest::set_google_client_id(GOOGLE_CLIENT_ID);
-    GoogleAuthRequest::set_google_client_secret(GOOGLE_CLIENT_SECRET);
-    GoogleAuthRequest::set_google_redirect_url(GOOGLE_REDIRECT_URL);
-    GoogleAuthRequest::set_google_scope(GOOGLE_SCOPE);
-    GoogleAuthRequest::set_signup_path(GOOGLE_SIGNUP_PATH);
-    GoogleAuthRequest::set_error_path(GOOGLE_ERROR_PATH);
+    Config::inst()->update('GoogleAuthRequest', 'client_id', GOOGLE_CLIENT_ID);
+    Config::inst()->update('GoogleAuthRequest', 'client_secret', GOOGLE_CLIENT_SECRET);
+    Config::inst()->update('GoogleAuthRequest', 'redirect_url', GOOGLE_REDIRECT_URL);
+    Config::inst()->update('GoogleAuthRequest', 'scope', GOOGLE_SCOPE);
+    Config::inst()->update('GoogleAuthRequest', 'signup_path', GOOGLE_SIGNUP_PATH);
+    Config::inst()->update('GoogleAuthRequest', 'error_path', GOOGLE_ERROR_PATH);
 }
 
 if(defined('TWITTER_CONSUMER_KEY')){
@@ -57,10 +57,10 @@ if(defined('INSTAGRAM_CLIENT_ID')){
 
     Controller::add_extension('InstagramCredentialController');
 
-    InstagramAuthRequest::set_instagram_client_id(INSTAGRAM_CLIENT_ID);
-    InstagramAuthRequest::set_instagram_client_secret(INSTAGRAM_CLIENT_SECRET);
-    InstagramAuthRequest::set_instagram_redirect_url(INSTAGRAM_REDIRECT_URL);
-    InstagramAuthRequest::set_instagram_scope(INSTAGRAM_SCOPE);
-    InstagramAuthRequest::set_signup_path(INSTAGRAM_SIGNUP_PATH);
-    InstagramAuthRequest::set_error_path(INSTAGRAM_ERROR_PATH);
+    Config::inst()->update('InstagramAuthRequest', 'client_id', INSTAGRAM_CLIENT_ID);
+    Config::inst()->update('InstagramAuthRequest', 'client_secret', INSTAGRAM_CLIENT_SECRET);
+    Config::inst()->update('InstagramAuthRequest', 'redirect_url', INSTAGRAM_REDIRECT_URL);
+    Config::inst()->update('InstagramAuthRequest', 'scope', INSTAGRAM_SCOPE);
+    Config::inst()->update('InstagramAuthRequest', 'signup_path', INSTAGRAM_SIGNUP_PATH);
+    Config::inst()->update('InstagramAuthRequest', 'error_path', INSTAGRAM_ERROR_PATH);
 }

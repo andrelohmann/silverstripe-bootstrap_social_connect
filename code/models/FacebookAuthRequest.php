@@ -5,65 +5,17 @@
  */
 class FacebookAuthRequest extends DataObject {
     
-    private static $facebook_app_id = null;
+    private static $app_id = null;
     
-    private static $facebook_app_secret = null;
+    private static $app_secret = null;
     
-    private static $facebook_redirect_url = null;
+    private static $redirect_url = null;
     
-    private static $facebook_scope = null;
+    private static $scope = null;
     
-    private static $facebook_signup_path = null;
+    private static $signup_path = null;
     
-    private static $facebook_error_path = null;
-    
-    public static function set_facebook_app_id($id){
-        self::$facebook_app_id = $id;
-    }
-    
-    public static function get_facebook_app_id(){
-        return self::$facebook_app_id;
-    }
-    
-    public static function set_facebook_app_secret($secret){
-        self::$facebook_app_secret = $secret;
-    }
-    
-    public static function get_facebook_app_secret(){
-        return self::$facebook_app_secret;
-    }
-    
-    public static function set_facebook_redirect_url($url){
-        self::$facebook_redirect_url = $url;
-    }
-    
-    public static function get_facebook_redirect_url(){
-        return self::$facebook_redirect_url;
-    }
-    
-    public static function set_facebook_scope($scope){
-        self::$facebook_scope = $scope;
-    }
-    
-    public static function get_facebook_scope(){
-        return self::$facebook_scope;
-    }
-    
-    public static function set_signup_path($path){
-        self::$facebook_signup_path = $path;
-    }
-    
-    public static function get_signup_path(){
-        return self::$facebook_signup_path;
-    }
-    
-    public static function set_error_path($path){
-        self::$facebook_error_path = $path;
-    }
-    
-    public static function get_error_path(){
-        return self::$facebook_error_path;
-    }
+    private static $error_path = null;
     
     private static $EXCHANGE_ACCESS_TOKEN_URL = 'https://graph.facebook.com/oauth/access_token?';
     
@@ -117,13 +69,13 @@ class FacebookAuthRequest extends DataObject {
      */
     private static function cleanup(){
         // delete all old state tokens
-        foreach(FacebookAuthRequest::get()->Where("Created < '".date ("Y-m-d H:i:s", strtotime("- ".FacebookAuthRequest::get_calc_state_lifetime()." seconds"))."'") as $o_ST){
+        foreach(FacebookAuthRequest::get()->Where("Created < '".date ("Y-m-d H:i:s", strtotime("- ".self::get_calc_state_lifetime()." seconds"))."'") as $o_ST){
             $o_ST->delete();
         }
     }
     
     public static function ExchangeAccessToken($code){
-        return self::run_curl(self::$EXCHANGE_ACCESS_TOKEN_URL."client_id=".self::get_facebook_app_id()."&redirect_uri=".self::get_facebook_redirect_url()."&client_secret=".self::get_facebook_app_secret()."&code=".$code);
+        return self::run_curl(self::$EXCHANGE_ACCESS_TOKEN_URL."client_id=".self::config()->app_id."&redirect_uri=".self::config()->redirect_url."&client_secret=".self::config()->app_secret."&code=".$code);
     }
     
     public static function run_curl($url, $method = 'GET', $postvars = null){

@@ -15,15 +15,15 @@ class FacebookCredentialController extends Extension {
     );
     
     public function FacebookAppId(){
-        return FacebookAuthRequest::get_facebook_app_id();
+        return FacebookAuthRequest::config()->app_id;
     }
     
     public function FacebookRedirectUrl(){
-        return FacebookAuthRequest::get_facebook_redirect_url();
+        return FacebookAuthRequest::config()->redirect_url;
     }
     
     public function FacebookScope(){
-        return FacebookAuthRequest::get_facebook_scope();
+        return FacebookAuthRequest::config()->scope;
     }
     
     public function FacebookState(){

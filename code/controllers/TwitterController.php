@@ -25,6 +25,13 @@ class TwitterController extends Controller {
 	 * @var string
 	 */
 	public static $template_main = 'Page';
+
+	/**
+	 * Returns a link to this controller.  Overload with your own Link rules if they exist.
+	 */
+	public function Link() {
+		return self::$url_segment .'/';
+	}
 	
 	/**
 	 * Initialise the controller
@@ -38,7 +45,7 @@ class TwitterController extends Controller {
         // creating the oath tokens and redirecting to the twitter auth page
         public function login(){
             
-            if(Member::currentUser()) return $this->redirect(Security::default_login_dest());
+            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
             
             try{
                 $connection = new TwitterOAuth(TwitterMember::get_twitter_consumer_key(), TwitterMember::get_twitter_consumer_secret());
@@ -72,7 +79,7 @@ class TwitterController extends Controller {
         
         public function auth(){
             
-            if(Member::currentUser()) return $this->redirect(Security::default_login_dest());
+            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
             
             /* check If the oauth_token is old */
             if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']){
@@ -96,7 +103,7 @@ class TwitterController extends Controller {
                             // twitter member found
                             // login and redirect
                             $o_Member->logIn();
-                            $this->redirect(Security::default_login_dest());
+                            $this->redirect(Security::config()->default_login_dest);
                         }else{
                             // twitter member not found
                             // save session data and redirect to twitter
@@ -122,7 +129,7 @@ class TwitterController extends Controller {
 	 */
 	public function signup() { // Signup Step 1
             
-            if(Member::currentUser()) return $this->redirect(Security::default_login_dest());
+            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
             
             // Signup nur zulassen, wenn TwitterUserData Session gesetzt wurde
             if(!$user = Session::get('TwitterUserData')) return $this->redirect(TwitterMember::get_error_path());
@@ -137,12 +144,12 @@ class TwitterController extends Controller {
             
             // if EmailVerifiedMember Module is used
             if(class_exists('EmailVerifiedMember')) {
-                EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
                 $o_Member->Verified = true;
                 $o_Member->VerificationEmailSent = true;
-                EmailVerifiedMember::set_deactivate_send_validation_mail(true);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', true);
                 $o_Member->write();
-                EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
             }else{
                 $o_Member->write();
             }
@@ -151,7 +158,7 @@ class TwitterController extends Controller {
             
             Session::clear('TwitterUserData');
             
-            $this->redirect(Security::default_login_dest());
+            $this->redirect(Security::config()->default_login_dest);
 	}
 
 	/**

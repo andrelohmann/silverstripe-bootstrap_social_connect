@@ -24,6 +24,13 @@ class FacebookController extends Controller {
 	 * @var string
 	 */
 	public static $template_main = 'Page';
+
+	/**
+	 * Returns a link to this controller.  Overload with your own Link rules if they exist.
+	 */
+	public function Link() {
+		return self::$url_segment .'/';
+	}
 	
 	/**
 	 * Initialise the controller
@@ -36,12 +43,12 @@ class FacebookController extends Controller {
         
         public function auth(){
             
-            if(Member::currentUser()) return $this->redirect(Security::default_login_dest());
+            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
             
             // Access Denied
             if(isset($_GET['error'])){
                 // possible access_denied_error
-                $this->redirect(FacebookAuthRequest::get_error_path());
+                $this->redirect(FacebookAuthRequest::config()->error_path);
             }else if(isset($_GET['code']) && isset($_GET['state']) && FacebookAuthRequest::State($_GET['state'])){
                 // CODE auswerten
                 $result = FacebookAuthRequest::ExchangeAccessToken($_GET['code']);
@@ -59,38 +66,38 @@ class FacebookController extends Controller {
                                 // facebook member found
                                 // login and redirect
                                 $o_Member->logIn();
-                                $this->redirect(Security::default_login_dest());
+                                $this->redirect(Security::config()->default_login_dest);
                             }else{
                                 // facebook member not found
                                 // save session data and redirect to facebook
                                 Session::set('FacebookUserData', $result);
-                                $this->redirect(FacebookAuthRequest::get_signup_path());
+                                $this->redirect(FacebookAuthRequest::config()->signup_path);
                             }
                         }else{
                             // Login unsuccessfull
-                            $this->redirect(FacebookAuthRequest::get_error_path());
+                            $this->redirect(FacebookAuthRequest::config()->error_path);
                         }
                     }else{
                         // acesstoken return value has changed
-                        $this->redirect(FacebookAuthRequest::get_error_path());
+                        $this->redirect(FacebookAuthRequest::config()->error_path);
                     }
                 }else{
                     // no accesstoken returned
                     // Code invalid
-                    $this->redirect(FacebookAuthRequest::get_error_path());
+                    $this->redirect(FacebookAuthRequest::config()->error_path);
                 }
             }else{
                 // state token unavailable
-                $this->redirect(FacebookAuthRequest::get_error_path());
+                $this->redirect(FacebookAuthRequest::config()->error_path);
             }
         }
         
         public function signup(){
             
-            if(Member::currentUser()) return $this->redirect(Security::default_login_dest());
+            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
             
             // Signup nur zulassen, wennFacebookUserData Session gesetzt wurde
-            if(!$user = Session::get('FacebookUserData')) return $this->redirect(FacebookAuthRequest::get_error_path());
+            if(!$user = Session::get('FacebookUserData')) return $this->redirect(FacebookAuthRequest::config()->error_path);
             
             $o_Member = new Member();
             
@@ -102,12 +109,12 @@ class FacebookController extends Controller {
             
             // if EmailVerifiedMember Module is used
             if(class_exists('EmailVerifiedMember')) {
-                EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
                 $o_Member->Verified = true;
                 $o_Member->VerificationEmailSent = true;
-                EmailVerifiedMember::set_deactivate_send_validation_mail(true);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', true);
                 $o_Member->write();
-                EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
             }else{
                 $o_Member->write();
             }
@@ -116,7 +123,7 @@ class FacebookController extends Controller {
             
             Session::clear('FacebookUserData');
             
-            $this->redirect(Security::default_login_dest());
+            $this->redirect(Security::config()->default_login_dest);
         }
         
 	/**

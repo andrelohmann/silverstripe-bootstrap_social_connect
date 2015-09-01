@@ -5,6 +5,10 @@
  * Andre Lohmann (Nickname: andrelohmann)
   <lohmann dot andre at googlemail dot com>
 
+## Requirements
+
+Silverstripe 3.2.x
+
 ## Introduction
 
 Social Login/Connect with Twitter, Facebook and Google
@@ -65,9 +69,10 @@ https://dev.twitter.com/docs/auth/oauth
 https://github.com/abraham/twitteroauth
 
 ### Notice
- * After each Update, set the new Tag
+This repository uses the git flow paradigm.
+After each release cycle, do not forget to push tags, master and develop to the remote origin
 ```
-git tag -a v1.2.3.4 -m 'Version 1.2.3.4'
-git push -u origin v1.2.3.4
+git push --tags
+git push origin develop
+git push origin master
 ```
- * Also update the requirements in andrelohmann/silverstripe-apptemplate

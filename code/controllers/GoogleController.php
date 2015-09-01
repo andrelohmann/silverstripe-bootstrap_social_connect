@@ -24,6 +24,13 @@ class GoogleController extends Controller {
 	 * @var string
 	 */
 	public static $template_main = 'Page';
+
+	/**
+	 * Returns a link to this controller.  Overload with your own Link rules if they exist.
+	 */
+	public function Link() {
+		return self::$url_segment .'/';
+	}
 	
 	/**
 	 * Initialise the controller
@@ -36,12 +43,12 @@ class GoogleController extends Controller {
         
         public function auth(){
             
-            if(Member::currentUser()) return $this->redirect(Security::default_login_dest());
+            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
             
             // Access Denied
             if(isset($_GET['error'])){
                 // possible access_denied_error
-                $this->redirect(GoogleAuthRequest::get_error_path());
+                $this->redirect(GoogleAuthRequest::config()->error_path);
             }else if(isset($_GET['code']) && isset($_GET['state']) && GoogleAuthRequest::State($_GET['state'])){
                 // CODE auswerten
                 $result = json_decode(GoogleAuthRequest::ExchangeAccessToken($_GET['code']), true);
@@ -55,34 +62,34 @@ class GoogleController extends Controller {
                             // google member found
                             // login and redirect
                             $o_Member->logIn();
-                            $this->redirect(Security::default_login_dest());
+                            $this->redirect(Security::config()->default_login_dest);
                         }else{
                             // google member not found
                             // save session data and redirect to google
                             Session::set('GoogleUserData', $result);
-                            $this->redirect(GoogleAuthRequest::get_signup_path());
+                            $this->redirect(GoogleAuthRequest::config()->signup_path);
                         }
                     }else{
                         // acesstoken return value has changed
-                        $this->redirect(GoogleAuthRequest::get_error_path());
+                        $this->redirect(GoogleAuthRequest::config()->error_path);
                     }
                 }else{
                     // no accesstoken returned
                     // Code invalid
-                    $this->redirect(GoogleAuthRequest::get_error_path());
+                    $this->redirect(GoogleAuthRequest::config()->error_path);
                 }
             }else{
                 // state token unavailable
-                $this->redirect(GoogleAuthRequest::get_error_path());
+                $this->redirect(GoogleAuthRequest::config()->error_path);
             }
         }
         
         public function signup(){
             
-            if(Member::currentUser()) return $this->redirect(Security::default_login_dest());
+            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
             
             // Signup nur zulassen, wennFacebookUserData Session gesetzt wurde
-            if(!$user = Session::get('GoogleUserData')) return $this->redirect(GoogleAuthRequest::get_error_path());
+            if(!$user = Session::get('GoogleUserData')) return $this->redirect(GoogleAuthRequest::config()->error_path);
             
             $o_Member = new Member();
             
@@ -94,12 +101,12 @@ class GoogleController extends Controller {
             
             // if EmailVerifiedMember Module is used
             if(class_exists('EmailVerifiedMember')) {
-                EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
                 $o_Member->Verified = true;
                 $o_Member->VerificationEmailSent = true;
-                EmailVerifiedMember::set_deactivate_send_validation_mail(true);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', true);
                 $o_Member->write();
-                EmailVerifiedMember::set_deactivate_send_validation_mail(false);
+                Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
             }else{
                 $o_Member->write();
             }
@@ -108,7 +115,7 @@ class GoogleController extends Controller {
             
             Session::clear('GoogleUserData');
             
-            $this->redirect(Security::default_login_dest());
+            $this->redirect(Security::config()->default_login_dest);
 	}
 
 	/**

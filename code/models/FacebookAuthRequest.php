@@ -13,7 +13,11 @@ class FacebookAuthRequest extends DataObject {
     
     private static $scope = null;
     
+    private static $fields = null;
+    
     private static $signup_path = null;
+    
+    private static $emailexists_path = null;
     
     private static $error_path = null;
     

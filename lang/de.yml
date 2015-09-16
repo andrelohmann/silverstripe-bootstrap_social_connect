@@ -1,14 +1,22 @@
 de:
+  SocialConnect:
+    LOGINBYEMAIL: 'Login mitEmail und Passwort'
   FacebookConnect:
     LOGINBUTTON: '<i class="fa fa-facebook"></i> Login mit facebook'
     ERRORTITLE: 'Login mit facebook - Fehler'
     ERRORCONTENT: 'Ein Fehler ist aufgetreten.'
     ERRORUNAVAILABLE: 'Login mit facebook wird nicht unterstützt.'
+    EMAILEXISTSTITLE: 'Deine Email Adresse existiert bereits'
+    EMAILEXISTS: 'Die folgende, von facebook zurück gelieferte Email Adresse existiert bereits in unserem System:'
+    EMAILEXISTSSERVICE: 'Bitte logge Dich mit dem gleichen Service ein, den Du auch bei der Registrierung verwendet hast.' 
   GoogleConnect:
     LOGINBUTTON: '<i class="fa fa-google-plus"></i> Login mit google'
     ERRORTITLE: 'Login mit google - Fehler'
     ERRORCONTENT: 'Ein Fehler ist aufgetreten.'
     ERRORUNAVAILABLE: 'Login mit google wird nicht unterstützt.'
+    EMAILEXISTSTITLE: 'Deine Email Adresse existiert bereits'
+    EMAILEXISTS: 'Die folgende, von google zurück gelieferte Email Adresse existiert bereits in unserem System:'
+    EMAILEXISTSSERVICE: 'Bitte logge Dich mit dem gleichen Service ein, den Du auch bei der Registrierung verwendet hast.' 
   InstagramConnect:
     LOGINBUTTON: '<i class="fa fa-instagram"></i> Login mit instagram'
     ERRORTITLE: 'Login mit instagram - Fehler'

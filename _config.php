@@ -1,5 +1,8 @@
 <?php
 
+// ad the SocialConnectType to the Members Table
+Member::add_extension('SocialConnectMember');
+
 if(defined('FACEBOOK_APP_ID')){
 
     /**
@@ -13,7 +16,9 @@ if(defined('FACEBOOK_APP_ID')){
     Config::inst()->update('FacebookAuthRequest', 'app_secret', FACEBOOK_APP_SECRET);
     Config::inst()->update('FacebookAuthRequest', 'redirect_url', FACEBOOK_REDIRECT_URL);
     Config::inst()->update('FacebookAuthRequest', 'scope', FACEBOOK_SCOPE);
+    Config::inst()->update('FacebookAuthRequest', 'fields', FACEBOOK_FIELDS);
     Config::inst()->update('FacebookAuthRequest', 'signup_path', FACEBOOK_SIGNUP_PATH);
+    Config::inst()->update('FacebookAuthRequest', 'emailexists_path', FACEBOOK_EMAILEXISTS_PATH);
     Config::inst()->update('FacebookAuthRequest', 'error_path', FACEBOOK_ERROR_PATH);
 }
 
@@ -31,6 +36,7 @@ if(defined('GOOGLE_CLIENT_ID')){
     Config::inst()->update('GoogleAuthRequest', 'redirect_url', GOOGLE_REDIRECT_URL);
     Config::inst()->update('GoogleAuthRequest', 'scope', GOOGLE_SCOPE);
     Config::inst()->update('GoogleAuthRequest', 'signup_path', GOOGLE_SIGNUP_PATH);
+    Config::inst()->update('GoogleAuthRequest', 'emailexists_path', GOOGLE_EMAILEXISTS_PATH);
     Config::inst()->update('GoogleAuthRequest', 'error_path', GOOGLE_ERROR_PATH);
 }
 

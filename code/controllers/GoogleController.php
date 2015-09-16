@@ -13,6 +13,7 @@ class GoogleController extends Controller {
 	private static $allowed_actions = array( 
             'auth',
             'signup',
+            'emailexists',
             'error'
 	);
 	
@@ -41,81 +42,107 @@ class GoogleController extends Controller {
             if(!defined('GOOGLE_CLIENT_ID')) return $this->httpError(404, _t('GoogleConnect.ERRORUNAVAILABLE', 'GoogleConnect.ERRORUNAVAILABLE'));
  	}
         
-        public function auth(){
-            
-            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
-            
-            // Access Denied
-            if(isset($_GET['error'])){
-                // possible access_denied_error
-                $this->redirect(GoogleAuthRequest::config()->error_path);
-            }else if(isset($_GET['code']) && isset($_GET['state']) && GoogleAuthRequest::State($_GET['state'])){
-                // CODE auswerten
-                $result = json_decode(GoogleAuthRequest::ExchangeAccessToken($_GET['code']), true);
-                if(isset($result['access_token'])){
-                    $result = json_decode(GoogleAuthRequest::run_curl('https://www.googleapis.com/oauth2/v1/userinfo?access_token='.$result['access_token']), true);
-                    if(isset($result['id']) && !isset($result['error'])){
-                        // Google Login successfull
-                        // fetch user by Google ID
-                        if($o_Member = Member::get()->filter(array('GoogleID' => $result['id']))->First()){
-                            
-                            // google member found
-                            // login and redirect
-                            $o_Member->logIn();
-                            $this->redirect(Security::config()->default_login_dest);
-                        }else{
-                            // google member not found
-                            // save session data and redirect to google
-                            Session::set('GoogleUserData', $result);
-                            $this->redirect(GoogleAuthRequest::config()->signup_path);
-                        }
-                    }else{
-                        // acesstoken return value has changed
-                        $this->redirect(GoogleAuthRequest::config()->error_path);
-                    }
-                }else{
-                    // no accesstoken returned
-                    // Code invalid
-                    $this->redirect(GoogleAuthRequest::config()->error_path);
-                }
-            }else{
-                // state token unavailable
-                $this->redirect(GoogleAuthRequest::config()->error_path);
-            }
-        }
+	public function auth(){
+
+		if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
+
+		// Access Denied
+		if(isset($_GET['error'])){
+			// possible access_denied_error
+			return $this->redirect(GoogleAuthRequest::config()->error_path);
+		}else if(isset($_GET['code']) && isset($_GET['state']) && GoogleAuthRequest::State($_GET['state'])){
+			// CODE auswerten
+			$result = json_decode(GoogleAuthRequest::ExchangeAccessToken($_GET['code']), true);
+			if(isset($result['access_token'])){
+				$result = json_decode(GoogleAuthRequest::run_curl('https://www.googleapis.com/oauth2/v1/userinfo?access_token='.$result['access_token']), true);
+				if(isset($result['id']) && !isset($result['error'])){
+					// Google Login successfull
+					// fetch user by Google ID
+					if($o_Member = Member::get()->filter(array('GoogleID' => $result['id']))->First()){
+
+						// google member found
+						// login and redirect
+						$o_Member->logIn();
+						return $this->redirect(Security::config()->default_login_dest);
+					}else{
+						// google member not found
+						// save session data and redirect
+						Session::set('GoogleUserData', $result);
+						
+						// check if Email allready exists in the system
+						if($o_Member = Member::get()->filter(array('Email' => $result['email']))->First()){
+							return $this->redirect(GoogleAuthRequest::config()->emailexists_path);
+						}else{
+							return $this->redirect(GoogleAuthRequest::config()->signup_path);
+						}
+					}
+				}else{
+					// acesstoken return value has changed
+					return $this->redirect(GoogleAuthRequest::config()->error_path);
+				}
+			}else{
+				// no accesstoken returned
+				// Code invalid
+				return $this->redirect(GoogleAuthRequest::config()->error_path);
+			}
+		}else{
+			// state token unavailable
+			return $this->redirect(GoogleAuthRequest::config()->error_path);
+		}
+	}
         
-        public function signup(){
-            
-            if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
-            
-            // Signup nur zulassen, wennFacebookUserData Session gesetzt wurde
-            if(!$user = Session::get('GoogleUserData')) return $this->redirect(GoogleAuthRequest::config()->error_path);
-            
-            $o_Member = new Member();
-            
-            $o_Member->FirstName = $user['name'];
-            
-            $o_Member->GoogleID = $user['id'];
-            
-            $o_Member->Email = $user['email'];
-            
-            // if EmailVerifiedMember Module is used
-            if(class_exists('EmailVerifiedMember')) {
-                Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
-                $o_Member->Verified = true;
-                $o_Member->VerificationEmailSent = true;
-                Config::inst()->update('Member', 'deactivate_send_validation_mail', true);
-                $o_Member->write();
-                Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
-            }else{
-                $o_Member->write();
-            }
-            
-            $o_Member->logIn();
-            
-            Session::clear('GoogleUserData');
-            
-            $this->redirect(Security::config()->default_login_dest);
+	public function signup(){
+
+		if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
+
+		// Signup nur zulassen, wennFacebookUserData Session gesetzt wurde
+		if(!$user = Session::get('GoogleUserData')) return $this->redirect(GoogleAuthRequest::config()->error_path);
+
+		$o_Member = new Member();
+
+		$o_Member->SocialConnectType = 'google';
+
+		$o_Member->FirstName = $user['name'];
+
+		$o_Member->GoogleID = $user['id'];
+
+		$o_Member->Email = $user['email'];
+
+		// if EmailVerifiedMember Module is used
+		if(class_exists('EmailVerifiedMember')) {
+			Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
+			$o_Member->Verified = true;
+			$o_Member->VerificationEmailSent = true;
+			Config::inst()->update('Member', 'deactivate_send_validation_mail', true);
+			$o_Member->write();
+			Config::inst()->update('Member', 'deactivate_send_validation_mail', false);
+		}else{
+			$o_Member->write();
+		}
+
+		$o_Member->logIn();
+
+		Session::clear('GoogleUserData');
+
+		return $this->redirect(Security::config()->default_login_dest);
+	}
+
+	public function emailexists(){
+
+		if(Member::currentUser()) return $this->redirect(Security::config()->default_login_dest);
+
+		// Signup nur zulassen, wennFacebookUserData Session gesetzt wurde
+		if(!$user = Session::get('GoogleUserData')) return $this->redirect(GoogleAuthRequest::config()->error_path);
+		
+		if(!$o_Member = Member::get()->filter(array('Email' => $user['email']))->First()) return $this->redirect(GoogleAuthRequest::config()->error_path);
+
+		Session::clear('GoogleUserData');
+		
+		return $this->customise(new ArrayData(array(
+            'Member' => $o_Member
+        )))->renderWith(
+            array('Google_emailexists', 'Google', $this->stat('template_main'), $this->stat('template'))
+        );
 	}
 
 	/**
@@ -123,11 +150,11 @@ class GoogleController extends Controller {
 	 */
 	public function error() {
             
-            return $this->customise(new ArrayData(array(
-                'Title' => _t('GoogleConnect.ERRORTITLE', 'GoogleConnect.ERRORTITLE'),
-                'Content' => _t('GoogleConnect.ERRORCONTENT', 'GoogleConnect.ERRORCONTENT')
-            )))->renderWith(
-                array('Google_error', 'Google', $this->stat('template_main'), $this->stat('template'))
-            );
+        return $this->customise(new ArrayData(array(
+            'Title' => _t('GoogleConnect.ERRORTITLE', 'GoogleConnect.ERRORTITLE'),
+            'Content' => _t('GoogleConnect.ERRORCONTENT', 'GoogleConnect.ERRORCONTENT')
+        )))->renderWith(
+            array('Google_error', 'Google', $this->stat('template_main'), $this->stat('template'))
+        );
 	}
 }
